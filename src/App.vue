@@ -36,7 +36,6 @@ body{min-height:100%}
   color: #333;
   text-align: center;
   min-height:100%;
-  padding: 0px;
 }
 
 .el-header, .el-footer {
