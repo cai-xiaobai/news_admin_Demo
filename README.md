@@ -1,24 +1,21 @@
-# newslist-admin
+## newslist-admin 新闻管理后台
 
-## Project setup
-```
-yarn install
-```
+基于vue.cli + element ui 实现基础后台
 
-### Compiles and hot-reloads for development
-```
-yarn serve
-```
+使用到的插件 axios
 
-### Compiles and minifies for production
-```
-yarn build
-```
+2020/5/27
 
-### Lints and fixes files
-```
-yarn lint
-```
+已完成：页面的布局；导航栏展开及连接路由；axios的封装；获取后台新闻数据；列表显示
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+未完成：编辑页（自定义文本校验、扩展组件的形式嵌入列表页）
+
+尚需完善：导航栏封装；列表封装；axios的高级封装
+
+
+
+2020/5/28
+
+已完成：编辑页（自定义文本校验、扩展组件的形式嵌入列表页）
+
+尚需完善：导航栏封装；列表封装；axios的高级封装

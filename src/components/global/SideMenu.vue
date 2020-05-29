@@ -12,8 +12,9 @@ export default {
       return {
             navList:[ 
                 {name:'/welcome',navItem:'首页'}, 
-                {name:'/newsList',navItem:'新闻'},
-                {name:'/components/User',navItem:'用户'}, 
+                {name:'/news',navItem:'新闻',child:[{name:'/newsList',navItem:'新闻列表'}]
+                },
+                {name:'/components/User',navItem:'会员',child:[{name:'/userList',navItem:'会员列表'}]}, 
             ] 
       };
     },
@@ -29,14 +30,29 @@ export default {
                 <el-menu
                     class="el-menu"
                     router
+                    default-active="/welcome"
                     collapse={collapsed}>
                     {navList.map((item,i)=>(
-                        <el-menu-item key={i} index={item.name}>
+                        // <el-menu-item key={i} index={item.name}>
+                        //     <i class="el-icon-s-platform" ></i>
+                        //     <span slot="title"> { item.navItem }</span>
+                        // </el-menu-item>
+                        <div>
+                        {item.child===undefined? 
+                        <el-menu-item  key={i} index={item.name}>
+                             <i class="el-icon-s-platform" ></i>
+                             <span slot="title"> { item.navItem }</span>
+                        </el-menu-item>: 
+                        <el-submenu  key={i} index={item.name}>
                             <template slot="title">
-                            <i class="el-icon-s-platform"></i>
-                            <span> { item.navItem }</span>
+                                <i class="el-icon-s-platform"></i>
+                                <span slot="title"> { item.navItem }</span>
                             </template>
-                        </el-menu-item>
+                            {item.child.map((item,i)=>(
+                                <el-menu-item index={item.name} key={i}>{item.navItem}</el-menu-item>
+                            ))}
+                        </el-submenu>}
+                        </div>
                     ))}   
                 </el-menu>
             )
@@ -78,6 +94,7 @@ export default {
 .mark {
     width: 32px;
 }
+
 .dark-title {
     display: inline-block;
     margin: 0  0 15px 5px;
