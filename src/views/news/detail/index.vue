@@ -1,6 +1,12 @@
 <template>
     <div>
       <div class="tb-header">
+        <el-breadcrumb class="bread" separator-class="el-icon-arrow-right">
+
+          <el-breadcrumb-item :to="{ path: '/welcome' }">首页</el-breadcrumb-item>
+          <el-breadcrumb-item>新闻</el-breadcrumb-item>
+          <el-breadcrumb-item>新闻列表</el-breadcrumb-item>
+        </el-breadcrumb>
         <el-button type="primary" class="tb-add" @click="handleAdd()">添加</el-button>
       </div>
       <el-table
@@ -31,13 +37,19 @@
         </el-table-column>
       </el-table>
       <news-add ref="add" :vo="defaultFormData" @handleQuery="handleQuery" />
+      <el-pagination
+        background
+        layout="prev, pager, next"
+        :total="total"
+        @current-change="currentChange">
+      </el-pagination>
     </div>
 </template>
 
 
 <script>
 import NewsAdd from "./NewsAdd.vue"
-import { get } from '@/axios/apis';
+import { get, post } from '@/axios/apis';
     export default {
       name:"NewsList",
       components:{ NewsAdd },
@@ -51,7 +63,8 @@ import { get } from '@/axios/apis';
             from:"",
             newTime:"",
             content:""
-          }
+          },
+          total:0
         }
       },
       created(){
@@ -60,15 +73,45 @@ import { get } from '@/axios/apis';
       methods:{
           async list(){
                await get('/api/getData').then((res)=>{
-                 this.tableData = res.data;
+                 this.tableData = res.data.formData;
+                 this.total = res.data.page;
+              })
+              // console.log(this.$router.history.current.path,this.$store.state.navList)
+               console.log( this.search(this.$store.state.navList,this.$router.history.current.path))
+              // console.log(bar))
+          },
+          search(val,target){
+            var result = ""
+            val.forEach(item => {
+              if(item.child===undefined){
+                if(item.name === target){
+                  result = item.navItem;
+                  return result
+                }
+              }else{
+                this.search(item.child,target)
+              }
+              return result
+            })
+            console.log(result)
+          },
+          currentChange(val){
+            get('/api/getData?p='+ val ).then((res)=>{
+                 this.tableData = res.data.formData;
               }) 
           },
           handleAdd(){
             this.$refs.add.dialogFormVisible = true
           },
-          handleQuery(params) {
+          async handleQuery(params) {
             this.$refs.add.dialogFormVisible = false
-            console.log("已提交",params)
+            await post('/api/addData',params).then(res => {
+              this.$message({
+                message: res.data.msg,
+                type: 'success'
+              });
+            })
+            
           },
       },
       
@@ -80,9 +123,14 @@ import { get } from '@/axios/apis';
   width: 100%;
   background-color: white;
   display: flex;
-  flex-direction: row-reverse;
+  flex-direction: row;
+  justify-content: space-between;
   margin: 10px 0 0 0;
   padding:10px 0 10px 0 ;
+}
+.bread{
+  margin: 15px 0 0 15px;
+  /* padding:10px 0 10px 0 ; */
 }
 .tb-add{
    margin: 0 15px 0 0;

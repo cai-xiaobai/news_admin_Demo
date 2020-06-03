@@ -1,5 +1,6 @@
 <script>
 import config from '../../config/index'
+import { mapGetters } from 'vuex'
 export default {
     name:'SideMenu',
     props:{
@@ -10,13 +11,13 @@ export default {
     },
     data() {
       return {
-            navList:[ 
-                {name:'/welcome',navItem:'首页'}, 
-                {name:'/news',navItem:'新闻',child:[{name:'/newsList',navItem:'新闻列表'}]
-                },
-                {name:'/components/User',navItem:'会员',child:[{name:'/userList',navItem:'会员列表'}]}, 
-            ] 
+            
       };
+    },
+    computed:{
+        ...mapGetters([
+            'navList'
+        ])
     },
     watch:{
         collapsed(){
@@ -25,36 +26,39 @@ export default {
     },
     methods:{
         renderMenu(){
-            const {collapsed,  navList } = this
+            const {collapsed } = this
             const Menu = (
-                <el-menu
-                    class="el-menu"
-                    router
-                    default-active="/welcome"
-                    collapse={collapsed}>
-                    {navList.map((item,i)=>(
-                        // <el-menu-item key={i} index={item.name}>
-                        //     <i class="el-icon-s-platform" ></i>
-                        //     <span slot="title"> { item.navItem }</span>
-                        // </el-menu-item>
-                        <div>
-                        {item.child===undefined? 
-                        <el-menu-item  key={i} index={item.name}>
-                             <i class="el-icon-s-platform" ></i>
-                             <span slot="title"> { item.navItem }</span>
-                        </el-menu-item>: 
-                        <el-submenu  key={i} index={item.name}>
-                            <template slot="title">
-                                <i class="el-icon-s-platform"></i>
+                <div class="scroll">
+                <el-scrollbar style="height: 100%;overflow-x: hidden;">
+                    <el-menu
+                        class="el-menu"
+                        router
+                        collapse={collapsed}>
+                        {this.$store.state.navList.map((item,i)=>(
+                            // <el-menu-item key={i} index={item.name}>
+                            //     <i class="el-icon-s-platform" ></i>
+                            //     <span slot="title"> { item.navItem }</span>
+                            // </el-menu-item>
+                            <div>
+                            {item.child===undefined? 
+                            <el-menu-item  key={i} index={item.name}>
+                                <i class="el-icon-s-platform" ></i>
                                 <span slot="title"> { item.navItem }</span>
-                            </template>
-                            {item.child.map((item,i)=>(
-                                <el-menu-item index={item.name} key={i}>{item.navItem}</el-menu-item>
-                            ))}
-                        </el-submenu>}
-                        </div>
-                    ))}   
-                </el-menu>
+                            </el-menu-item>: 
+                            <el-submenu  key={i} index={item.name}>
+                                <template slot="title">
+                                    <i class="el-icon-s-platform"></i>
+                                    <span slot="title"> { item.navItem }</span>
+                                </template>
+                                {item.child.map((item,i)=>(
+                                    <el-menu-item index={item.name} key={i}>{item.navItem}</el-menu-item>
+                                ))}
+                            </el-submenu>}
+                            </div>
+                        ))}   
+                    </el-menu>
+                </el-scrollbar>
+                </div>
             )
             return Menu
         }
@@ -80,7 +84,13 @@ export default {
 </script>
 
 <style scoped>
-
+.scroll{
+    height: 100vh;
+    
+}
+.el-scrollbar__wrap {
+    overflow-x: hidden;
+}
 .el-menu{
     width: 100%;
     min-height: 100%;

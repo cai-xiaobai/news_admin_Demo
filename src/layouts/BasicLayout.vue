@@ -41,7 +41,8 @@ export default {
 <style>
 .menu-open,
 .menu-close{
-  height: 579px;
+  /* height: 579px; */
+    height: 100vh;
 }
 .menu-open{
     min-width:200px;
