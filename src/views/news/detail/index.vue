@@ -54,6 +54,7 @@ import { get, post } from '@/axios/apis';
       name:"NewsList",
       components:{ NewsAdd },
       data() {
+        // console.info(this.$route,this.$router)
         return {
           tableData: [],
           defaultFormData:{
@@ -70,6 +71,7 @@ import { get, post } from '@/axios/apis';
       created(){
           this.list()
       },
+
       methods:{
           async list(){
                await get('/api/getData').then((res)=>{
@@ -77,7 +79,7 @@ import { get, post } from '@/axios/apis';
                  this.total = res.data.page;
               })
               // console.log(this.$router.history.current.path,this.$store.state.navList)
-               console.log( this.search(this.$store.state.navList,this.$router.history.current.path))
+              //  console.log( this.search(this.$store.state.navList,this.$router.history.current.path))
               // console.log(bar))
           },
           search(val,target){
