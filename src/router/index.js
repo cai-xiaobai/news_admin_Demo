@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import newsList from "../views/news/detail/index.vue"
-import { BasicLayout } from '@/layouts'
+import { BasicLayout } from '@/views/frame'
 Vue.use(Router)
 
 

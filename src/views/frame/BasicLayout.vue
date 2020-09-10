@@ -1,7 +1,7 @@
 <script>
-import GlobalHeader from '@/components/global/GlobalHeader.vue'
-import GlobalFooter from '@/components/global/GlobalFooter.js'
-import SideMenu from '@/components/global/SideMenu.vue'
+import GlobalHeader from './global/GlobalHeader.vue'
+import GlobalFooter from './global/GlobalFooter.js'
+import SideMenu from './global/SideMenu.vue'
 export default {
     components:{ GlobalHeader, SideMenu, GlobalFooter },
     data() {
@@ -25,7 +25,6 @@ export default {
                         <side-menu collapsed={collapsed} {...{ on }} />
                     </div>
                 <el-main id="main">
-
                         <global-header collapsed={collapsed} onToggle={changeCollapse} />
                         <el-row class="router">
                             <router-view />

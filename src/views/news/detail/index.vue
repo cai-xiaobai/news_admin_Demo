@@ -7,7 +7,7 @@
           <el-breadcrumb-item>新闻</el-breadcrumb-item>
           <el-breadcrumb-item>新闻列表</el-breadcrumb-item>
         </el-breadcrumb>
-        <el-button type="primary" class="tb-add" @click="handleAdd()">添加</el-button>
+       <el-button type="primary" class="tb-add" @click="handleAdd()">添加</el-button>
       </div>
       <el-table
         :data="tableData"
@@ -36,25 +36,23 @@
           label="新闻来源">
         </el-table-column>
       </el-table>
-      <news-add ref="add" :vo="defaultFormData" @handleQuery="handleQuery" />
-      <el-pagination
-        background
-        layout="prev, pager, next"
-        :total="total"
-        @current-change="currentChange">
-      </el-pagination>
+     <news-add ref="add" :vo="defaultFormData" @handleQuery="handleQuery" />
+     <el-pagination
+       background
+       layout="prev, pager, next"
+       :total="total"
+       @current-change="currentChange">
+     </el-pagination>
     </div>
 </template>
 
 
 <script>
 import NewsAdd from "./NewsAdd.vue"
-import { get, post } from '@/axios/apis';
     export default {
       name:"NewsList",
       components:{ NewsAdd },
       data() {
-        // console.info(this.$route,this.$router)
         return {
           tableData: [],
           defaultFormData:{
@@ -74,9 +72,9 @@ import { get, post } from '@/axios/apis';
 
       methods:{
           async list(){
-               await get('/api/getData').then((res)=>{
-                 this.tableData = res.data.formData;
-                 this.total = res.data.page;
+               await this.http.get(this.GET_NEWS).then((res)=>{
+                 this.tableData = res.formData;
+                 this.total = res.page;
               })
               // console.log(this.$router.history.current.path,this.$store.state.navList)
               //  console.log( this.search(this.$store.state.navList,this.$router.history.current.path))
@@ -98,22 +96,16 @@ import { get, post } from '@/axios/apis';
             console.log(result)
           },
           currentChange(val){
-            get('/api/getData?p='+ val ).then((res)=>{
-                 this.tableData = res.data.formData;
-              }) 
+            this.http.get(this.GET_NEWS+'?p='+ val ).then((res)=>{
+                 this.tableData = res.formData;
+              })
           },
           handleAdd(){
             this.$refs.add.dialogFormVisible = true
           },
           async handleQuery(params) {
             this.$refs.add.dialogFormVisible = false
-            await post('/api/addData',params).then(res => {
-              this.$message({
-                message: res.data.msg,
-                type: 'success'
-              });
-            })
-            
+            await this.http.post(this.POST_NEW,params)
           },
       },
       

@@ -1,5 +1,5 @@
 <script>
-import config from '../../config/index'
+import config from '@/config/index'
 import { mapGetters } from 'vuex'
 export default {
     name:'SideMenu',
